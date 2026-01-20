@@ -1,60 +1,30 @@
-#include <string>
 #include <vector>
 #include <algorithm>
 
 using namespace std;
 
-string cut(string str, int length){
-    while(true){
-        if(str.size() > length){
-            return str.substr(0, length);
-        }else{
-            str += str;
-        }
-    }    
-}
-
-int check(vector<int> answer, vector<int> myans){
-    int correct = 0;
-    for(int i = 0; i < answer.size(); i++){
-        if(answer[i] == myans[i]) correct++;
-    }
-    return correct;
-}
-
-vector<int> finish(int a, int b, int c){
-    vector<int> result;
-    int max_val = max({a, b, c});
-    if (a == max_val) result.push_back(1);
-    if (b == max_val) result.push_back(2);
-    if (c == max_val) result.push_back(3);
-    return result;
-}
-
 vector<int> solution(vector<int> answers) {
-    vector<int> answer;
-    int length = answers.size();
-    string first = "12345";
-    string second = "21232425";
-    string third = "3311224455";
-    first = cut(first, length);
-    second = cut(second, length);
-    third = cut(third, length);
-    int firstc, secondc, thirdc;
+    vector<int> p1 = {1, 2, 3, 4, 5};
+    vector<int> p2 = {2, 1, 2, 3, 2, 4, 2, 5};
+    vector<int> p3 = {3, 3, 1, 1, 2, 2, 4, 4, 5, 5};
     
-    vector<int> firstans, secondans, thirdans;
-    for(int i = 0; i < length; i++){
-        firstans.push_back(first[i] - '0');
-        secondans.push_back(second[i] - '0');
-        thirdans.push_back(third[i] - '0');        
+    vector<int> scores(3, 0);
+    
+    for (int i = 0; i < answers.size(); i++) {
+        if (answers[i] == p1[i % p1.size()]) scores[0]++;
+        if (answers[i] == p2[i % p2.size()]) scores[1]++;
+        if (answers[i] == p3[i % p3.size()]) scores[2]++;
     }
     
-    firstc = check(answers, firstans);
-    secondc = check(answers, secondans);
-    thirdc = check(answers, thirdans);
+    int max_score = max({scores[0], scores[1], scores[2]});
     
-    answer = finish(firstc, secondc, thirdc);
+
+    vector<int> result;
+    for (int i = 0; i < 3; i++) {
+        if (scores[i] == max_score) {
+            result.push_back(i + 1);
+        }
+    }
     
-    
-    return answer;
+    return result;
 }
